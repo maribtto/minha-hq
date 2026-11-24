@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>A Última Xícara · HQ Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Comic Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fbe9e7 0%, #ffe0d4 100%);
+            min-height: 100vh;
+            padding: 1.2rem 0.8rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hq-container {
+            max-width: 950px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+        }
+
+        .cena {
+            position: relative;
+            background-color: #fef9f7;
+            border-radius: 40px 40px 30px 30px;
+            box-shadow: 0 15px 25px rgba(180, 100, 80, 0.25), 0 0 0 3px #ffe3d6, 0 0 0 6px #fff5f0;
+            padding: 1.2rem 1rem 1.8rem;
+            border: 1px solid #ffd8c5;
+        }
+
+        .cena::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 30px;
+            width: 70px;
+            height: 28px;
+            background: rgba(255, 220, 200, 0.7);
+            border-radius: 20px 8px 20px 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transform: rotate(-5deg);
+            z-index: 5;
+        }
+
+        .cena::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            right: 40px;
+            width: 80px;
+            height: 26px;
+            background: rgba(255, 210, 185, 0.8);
+            border-radius: 8px 20px 8px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transform: rotate(3deg);
+            z-index: 5;
+        }
+
+        .cabecalho-cena {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fef0e0;
+            background-image: repeating-linear-gradient(45deg, #ffede1 0px, #ffede1 2px, #fff5eb 2px, #fff5eb 6px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px 30px 30px 100px;
+            margin-bottom: 1rem;
+            border: 2px solid #efc9b3;
+            box-shadow: 0 5px 0 #d9b29e;
+            position: relative;
+            z-index: 10;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .titulo-pergaminho {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 700;
+            color: #a55233;
+            font-size: 1.25rem;
+        }
+
+        .titulo-pergaminho span { font-size: 1.6rem; line-height: 1; }
+
+        .subtitulo-cena {
+            background: #ffd9c2;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            color: #653e2b;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px dashed #b27b62;
+        }
+
+        .quadro-imagem {
+            position: relative;
+            width: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 3px #fff2ea, 0 8px 15px rgba(120, 70, 50, 0.2);
+            background: #f1dbcf;
+            line-height: 0;
+            border: 3px solid #fffbf7;
+            margin-bottom: 1rem;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Fundo fofo caso a imagem falhe */
+        .quadro-imagem::before {
+            content: "🖼️ Imagem da Cena";
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b08068;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            z-index: 0;
+        }
+
+        .quadro-imagem img {
+            position: relative;
+            width: 100%;
+            height: auto;
+            display: block;
+            z-index: 1;
+        }
+
+        .baloes-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .balao {
+            position: absolute;
+            background: #fff9f3;
+            border-radius: 28px;
+            padding: 0.75rem 1.2rem;
+            box-shadow: 0 6px 0 #cfa68a, 0 10px 20px rgba(0, 0, 0, 0.15);
+            border: 2px solid #f5c6a8;
+            max-width: 80%;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #2e1e15;
+            font-weight: 500;
+            pointer-events: auto;
+            z-index: 20;
+        }
+
+        .balao-pensamento {
+            border-radius: 80px;
+            background: #fef7e9;
+            border: 2px dashed #c99f82;
+            font-style: italic;
+        }
+
+        .balao-choque {
+            border-radius: 10px 30px 10px 30px;
+            background: #fff2e2;
+            border: 3px solid #d18f6b;
+            box-shadow: 0 5px 0 #b27454, 0 10px 18px rgba(0,0,0,0.2);
+        }
+
+        .balao-alto { font-weight: 700; background: #ffe7da; border: 3px solid #e09c7a; }
+
+        .balao::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .balao-esq::after {
+            bottom: -16px; left: 24px;
+            border-width: 18px 18px 0 0;
+            border-color: #fff9f3 transparent transparent transparent;
+        }
+        .balao-esq.balao-pensamento::after { border-top-color: #fef7e9; }
+        .balao-esq.balao-alto::after { border-top-color: #ffe7da; }
+
+        .balao-dir::after {
+            bottom: -16px; right: 24px;
+            border-width: 18px 0 0 18px;
+            border-color: #fff9f3 transparent transparent transparent;
+        }
+        .balao-dir.balao-pensamento::after { border-top-color: #fef7e9; }
+        .balao-dir.balao-alto::after { border-top-color: #ffe7da; }
+
+        .balao-inferior-esq::after {
+            bottom: -18px; left: 30px;
+            border-width: 20px 20px 0 0;
+            border-color: #fef7e9 transparent transparent transparent;
+        }
+
+        /* Posições */
+        .cena1 .theo-balao { top: 12%; left: 6%; max-width: 48%; }
+        .cena1 .clara-balao { bottom: 18%; right: 6%; max-width: 48%; }
+        .cena2 .theo-balao1 { top: 8%; left: 6%; max-width: 55%; }
+        .cena2 .theo-balao2 { bottom: 22%; left: 18%; max-width: 58%; }
+        .cena3 .balao-bilhete { bottom: 15%; left: 6%; max-width: 55%; }
+        .cena3 .theo-balao { top: 8%; right: 6%; max-width: 60%; }
+        .cena4 .theo-balao1 { top: 6%; left: 4%; max-width: 50%; }
+        .cena4 .clara-balao1 { top: 6%; right: 4%; max-width: 58%; }
+        .cena4 .theo-balao2 { bottom: 18%; left: 4%; max-width: 50%; }
+        .cena4 .clara-balao2 { bottom: 14%; right: 4%; max-width: 60%; }
+
+        .botao-ouvir {
+            background: #f5c6a8;
+            border: none;
+            border-radius: 100px;
+            padding: 0.75rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4c2a1a;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 7px 0 #b28062, 0 8px 16px rgba(160, 100, 70, 0.3);
+            cursor: pointer;
+            border: 2px solid #ffede1;
+            margin-left: auto;
+            position: relative;
+            z-index: 30;
+        }
+
+        .botao-ouvir:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #b28062;
+        }
+
+        @media (max-width: 650px) {
+            .balao { font-size: 0.8rem; padding: 0.6rem 0.9rem; border-radius: 20px; max-width: 90%; }
+            .cena1 .theo-balao { top: 4%; left: 3%; max-width: 58%; }
+            .cena1 .clara-balao { bottom: 12%; right: 3%; max-width: 60%; }
+            .cena2 .theo-balao1 { top: 3%; left: 3%; max-width: 66%; }
+            .cena2 .theo-balao2 { bottom: 10%; left: 8%; max-width: 72%; }
+            .cena3 .balao-bilhete { bottom: 8%; left: 3%; max-width: 72%; }
+            .cena3 .theo-balao { top: 3%; right: 3%; max-width: 70%; }
+            .cena4 .theo-balao1 { top: 2%; left: 3%; max-width: 65%; }
+            .cena4 .clara-balao1 { top: 2%; right: 3%; max-width: 70%; }
+            .cena4 .theo-balao2 { bottom: 8%; left: 3%; max-width: 65%; }
+            .cena4 .clara-balao2 { bottom: 6%; right: 3%; max-width: 72%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hq-container">
+
+        <!-- CENA 1 -->
+        <div class="cena cena1">
+            <div class="cabecalho-cena">
+                <div class="titulo-pergaminho"><span>☕</span> A Última Xícara</div>
+                <div class="subtitulo-cena">Cena 1: O Encontro</div>
+            </div>
+            <div class="quadro-imagem">
+                <img src="cena1.png" alt="Cena 1" class="img-cena" data-cena="1">
+                <div class="baloes-wrapper">
+                    <div class="balao balao-esq theo-balao">“Seu cappuccino de sempre, Clara. A chuva está esengrossando lá fora... espero que o café ajude a esquentar antes de você ir.”</div>
+                    <div class="balao balao-dir clara-balao">“Nossa, nem vi o tempo passar! Obrigada, Theo. Seu atendimento e esse café são sempre o meu momento favorito do dia.”</div>
+                </div>
+            </div>
+            <button class="botao-ouvir" onclick="falarCena1()"><span>🔊</span> Ouvir cena 1</button>
+        </div>
+
+        <!-- CENA 2 -->
+        <div class="cena cena2">
+            <div class="cabecalho-cena">
+                <div class="titulo-pergaminho"><span>☕</span> A Última Xícara</div>
+                <div class="subtitulo-cena">Cena 2: O Conflito</div>
+            </div>
+            <div class="quadro-imagem">
+                <img src="cena2.png" alt="Cena 2" class="img-cena" data-cena="2">
+                <div class="baloes-wrapper">
+                    <div class="balao balao-alto balao-esq theo-balao1">“Clara, espera! Você esqueceu...”</div>
+                    <div class="balao balao-pensamento balao-dir theo-balao2">“É um bilhete? Mas a chuva borrou quase tudo...”</div>
+                </div>
+            </div>
+            <button class="botao-ouvir" onclick="falarCena2()"><span>🔊</span> Ouvir cena 2</button>
+        </div>
+
+        <!-- CENA 3 -->
+        <div class="cena cena3">
+            <div class="cabecalho-cena">
+                <div class="titulo-pergaminho"><span>☕</span> A Última Xícara</div>
+                <div class="subtitulo-cena">Cena 3: O Suspense</div>
+            </div>
+            <div class="quadro-imagem">
+                <img src="cena3.png" alt="Cena 3" class="img-cena" data-cena="3">
+                <div class="baloes-wrapper">
+                    <div class="balao balao-inferior-esq balao-pensamento balao-bilhete">“Hoje é meu último dia na cidade... preciso te dizer uma coisa antes de ir...”</div>
+                    <div class="balao balao-choque balao-dir theo-balao">“Último dia?! Ela vai embora para sempre?”</div>
+                </div>
+            </div>
+            <button class="botao-ouvir" onclick="falarCena3()"><span>🔊</span> Ouvir cena 3</button>
+        </div>
+
+        <!-- CENA 4 -->
+        <div class="cena cena4">
+            <div class="cabecalho-cena">
+                <div class="titulo-pergaminho"><span>☕</span> A Última Xícara</div>
+                <div class="subtitulo-cena">Cena 4: O Final Surpreendente</div>
+            </div>
+            <div class="quadro-imagem">
+                <img src="cena4.png" alt="Cena 4" class="img-cena" data-cena="4">
+                <div class="baloes-wrapper">
+                    <div class="balao balao-esq theo-balao1">“Clara?! Você não estava indo embora da cidade?!”</div>
+                    <div class="balao balao-dir clara-balao1">“O quê? Não! O bilhete dizia: último dia da minha folga, amanhã volto a trabalhar no prédio da frente!”</div>
+                    <div class="balao balao-esq theo-balao2">“Ah... e o que mais dizia?”</div>
+                    <div class="balao balao-dir clara-balao2">“Quer tomar um café comigo amanhã, mas do outro lado do balcão?”</div>
+                </div>
+            </div>
+            <button class="botao-ouvir" onclick="falarCena4()"><span>🔊</span> Ouvir cena 4</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- SISTEMA DE TENTATIVA E ERRO PARA AS IMAGENS ---
+        const imagens = document.querySelectorAll('.img-cena');
+        
+        imagens.forEach(img => {
+            let numero = img.getAttribute('data-cena');
+            // Lista de nomes possíveis, agora na raiz (sem a pasta "imagens/")
+            let tentativas = [
+                `cena${numero}.png`,
+                `Cena 0${numero}.png`,
+                `Cena${numero}.png`,
+                `cena 0${numero}.png`,
+                `cena${numero}.jpg`,
+                `Cena 0${numero}.jpg`
+            ];
+            let index = 0;
+
+            img.onerror = function() {
+                index++;
+                if (index < tentativas.length) {
+                    img.src = tentativas[index];
+                } else {
+                    img.style.display = 'none'; // esconde se não achar de jeito nenhum
+                }
+            };
+            
+            img.src = tentativas[0];
+        });
+
+        // --- SÍNTESE DE VOZ ---
+        function falarTexto(texto) {
+            if (!window.speechSynthesis) {
+                alert('Seu navegador não suporta síntese de voz. 😢');
+                return;
+            }
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 0.95;
+            utterance.pitch = 1.1;
+
+            const vozes = window.speechSynthesis.getVoices();
+            const vozPt = vozes.find(voz => voz.lang.includes('pt-BR') || voz.lang.includes('pt_BR'));
+            if (vozPt) utterance.voice = vozPt;
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        if (window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => {};
+            window.speechSynthesis.getVoices();
+        }
+
+        function falarCena1() {
+            falarTexto(`Seu cappuccino de sempre, Clara. A chuva está esengrossando lá fora... espero que o café ajude a esquentar antes de você ir.
+            Nossa, nem vi o tempo passar! Obrigada, Theo. Seu atendimento e esse café são sempre o meu momento favorito do dia.`);
+        }
+
+        function falarCena2() {
+            falarTexto(`Clara, espera! Você esqueceu...
+            É um bilhete? Mas a chuva borrou quase tudo...`);
+        }
+
+        function falarCena3() {
+            falarTexto(`Hoje é meu último dia na cidade... preciso te dizer uma coisa antes de ir...
+            Último dia?! Ela vai embora para sempre?`);
+        }
+
+        function falarCena4() {
+            falarTexto(`Clara?! Você não estava indo embora da cidade?!
+            O quê? Não! O bilhete dizia: último dia da minha folga, amanhã volto a trabalhar no prédio da frente!
+            Ah... e o que mais dizia?
+            Quer tomar um café comigo amanhã, mas do outro lado do balcão?`);
+        }
+    </script>
+</body>
+</html>
